@@ -25,11 +25,14 @@ func init() {
 	ip := cfg.Section("mysql").Key("ip").String()
 	port := cfg.Section("mysql").Key("port").String()
 	user := cfg.Section("mysql").Key("user").String()
+	app := cfg.Section("mysql").Key("app").String()
 
-	dsn := user + ":" + password + "@tcp(" + ip + ":" + port + ")/test01?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := user + ":" + password + "@tcp(" + ip + ":" + port + ")/" + app + "?charset=utf8mb4&parseTime=True&loc=Local"
+	fmt.Println("连接DSN:", dsn) // 调试输出
+
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
 	if err != nil {
-		fmt.Println("failed to connect database")
+		fmt.Printf("数据库连接失败: %v\n", err) // 输出具体错误
+		os.Exit(1)
 	}
 }

@@ -20,7 +20,7 @@ func MakeCaptcha() (string, string, error) {
 		NoiseCount:      0,
 		ShowLineOptions: 2 | 4,
 		Length:          4,
-		Source:          "1234567890qwertyuioplkjhgfdsazxcvbnm",
+		Source:          "1234567890",
 		BgColor: &color.RGBA{
 			R: 3,
 			G: 102,

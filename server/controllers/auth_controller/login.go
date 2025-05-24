@@ -22,6 +22,24 @@ func (con LoginController) Login(c *gin.Context) {
 	verifyValue := c.PostForm("verifyValue")
 
 	if flag := models.VerifyCaptcha(captchaId, verifyValue); flag {
+
+		fmt.Println(username)
+
+		// 1. 根据用户名查用户（用户名是唯一索引）
+		var user models.AdminUser
+
+		// 1. 根据用户名查询用户（用户名是唯一索引）
+		err := models.DB.Where("username=? AND password=?", username, password).Find(&user).Error
+
+		if err != nil {
+			// 模糊提示，避免暴露用户是否存在的信息
+			c.JSON(http.StatusOK, gin.H{
+				"code": 401,
+				"msg":  "用户名或密码错误",
+			})
+			return
+		}
+
 		// 查询数据库
 		c.JSON(http.StatusOK, gin.H{
 			"code": 0,
@@ -30,7 +48,7 @@ func (con LoginController) Login(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H{
 			"code": 1,
-			"msg":  http.StatusText(http.StatusOK),
+			"msg":  "验证码不能为空",
 		})
 	}
 }

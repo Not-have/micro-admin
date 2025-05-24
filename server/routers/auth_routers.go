@@ -8,8 +8,6 @@ import (
 
 func AuthRouters(r *gin.Engine) {
 	r.POST("/login", controller.LoginController{}.Login)
-}
-
-func CaptchaRouters(r *gin.Engine) {
 	r.GET("/captcha", controller.LoginController{}.Captcha)
+
 }
