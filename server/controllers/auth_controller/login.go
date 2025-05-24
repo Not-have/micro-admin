@@ -5,6 +5,7 @@ import (
 	"micro-server/models"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	BaseController "micro-server/controllers/base_controller"
@@ -28,7 +29,6 @@ func (con LoginController) Login(c *gin.Context) {
 		// 1. 根据用户名查用户（用户名是唯一索引）
 		var user models.AdminUser
 
-		// 1. 根据用户名查询用户（用户名是唯一索引）
 		err := models.DB.Where("username=? AND password=?", username, password).Find(&user).Error
 
 		if err != nil {
@@ -40,7 +40,11 @@ func (con LoginController) Login(c *gin.Context) {
 			return
 		}
 
-		// 查询数据库
+		//2、执行登录 保存用户信息 执行跳转
+		session := sessions.Default(c)
+		session.Set("user", user)
+		session.Save()
+
 		c.JSON(http.StatusOK, gin.H{
 			"code": 0,
 			"msg":  http.StatusText(http.StatusOK),
