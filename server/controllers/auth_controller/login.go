@@ -52,7 +52,7 @@ func (con LoginController) Login(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H{
 			"code": 1,
-			"msg":  "验证码不能为空",
+			"msg":  "验证码错误",
 		})
 	}
 }
