@@ -1,13 +1,17 @@
 # Server
 
-## git 放弃本地某个文件的跟踪
+## 下载依赖
 
 ```bash
-git update-index --skip-worktree /Users/liyong/Desktop/code/micro-admin/server/conf/app.ini
+go mod tidy
 ```
 
-## git 恢复某个文件的跟踪
+## fresh 运行
 
 ```bash
-git update-index --no-skip-worktree /Users/liyong/Desktop/code/micro-admin/server/conf/app.ini
+# 检查是否安装
+ls $(go env GOPATH)/bin | grep fresh
+
+# 不加入环境变量
+$(go env GOPATH)/bin/fresh
 ```
