@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"micro-server/models"
 	"net/http"
@@ -8,7 +9,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	BaseController "micro-server/controllers/base_controller"
+	BaseController "micro-server/controllers/base-controller"
 )
 
 type LoginController struct {
@@ -24,34 +25,36 @@ func (con LoginController) Login(c *gin.Context) {
 
 	if flag := models.VerifyCaptcha(captchaId, verifyValue); flag {
 
-		fmt.Println(username)
-
 		// 1. 根据用户名查用户（用户名是唯一索引）
-		var user models.AdminUser
+		userinfoList := []models.AdminUser{}
 
-		err := models.DB.Where("username=? AND password=?", username, password).Find(&user).Error
+		err := models.DB.Where("username=? AND password=?", username, password).Find(&userinfoList).Error
 
 		if err != nil {
 			// 模糊提示，避免暴露用户是否存在的信息
 			c.JSON(http.StatusOK, gin.H{
-				"code": 401,
+				"code": http.StatusUnauthorized,
 				"msg":  "用户名或密码错误",
 			})
 			return
 		}
 
-		//2、执行登录 保存用户信息 执行跳转
-		session := sessions.Default(c)
-		session.Set("user", user)
-		session.Save()
+		if len(userinfoList) > 0 {
+			//3、执行登录 保存用户信息 执行跳转
+			session := sessions.Default(c)
+			//注意：session.Set没法直接保存结构体对应的切片 把结构体转换成json字符串
+			userinfoSlice, _ := json.Marshal(userinfoList[0])
+			session.Set("userinfo", string(userinfoSlice))
+			session.Save()
+		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
+			"code": http.StatusOK,
 			"msg":  http.StatusText(http.StatusOK),
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
-			"code": 1,
+			"code": 1001,
 			"msg":  "验证码错误",
 		})
 	}
