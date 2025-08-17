@@ -3,7 +3,8 @@ package models
 import "time"
 
 type AdminUser struct {
-	UserId       uint       `gorm:"column:user_id;primaryKey;autoIncrement"`
+	// 导出命名修改
+	UserId       uint       `gorm:"column:user_id;primaryKey;autoIncrement" json:"user_id"`
 	Username     string     `gorm:"column:username;uniqueIndex"`
 	PasswordHash string     `gorm:"column:password_hash"`
 	RealName     string     `gorm:"column:real_name"`
