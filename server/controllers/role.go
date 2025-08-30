@@ -77,3 +77,26 @@ func (con RoleController) RoleCreate(c *gin.Context) {
 		"msg":  http.StatusText(http.StatusOK),
 	})
 }
+
+func (con RoleController) RoleDelete(c *gin.Context) {
+	id := c.PostForm("id")
+
+	if id == "" {
+		con.Base.fail(c, "参数错误")
+		return
+	}
+
+	result := models.DB.Delete(&models.Role{}, id)
+
+	if result.RowsAffected == 0 {
+		con.Base.fail(c, "角色不存在")
+		return
+	}
+
+	if result.Error != nil {
+		con.Base.fail(c, "删除失败")
+		return
+	}
+
+	con.Base.success(c, "删除成功")
+}

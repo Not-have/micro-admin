@@ -7,11 +7,12 @@ import (
 )
 
 func RoleInit(r *gin.Engine) {
-	user := r.Group("/role")
+	role := r.Group("/role")
 
 	// 用户相关路由
 	{
-		user.POST("/create", controllers.RoleController{}.RoleCreate)
-		user.GET("/list", controllers.RoleController{}.RoleList)
+		role.POST("/create", controllers.RoleController{}.RoleCreate)
+		role.GET("/list", controllers.RoleController{}.RoleList)
+		role.DELETE("/delete", controllers.RoleController{}.RoleDelete)
 	}
 }
