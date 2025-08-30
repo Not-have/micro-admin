@@ -25,6 +25,7 @@ func main() {
 
 	routers.AuthRoutersInit(r)
 	routers.UserInit(r)
+	routers.RoleInit(r)
 
 	r.Run(":8111")
 }
