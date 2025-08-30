@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	BaseController "micro-server/controllers/base-controller"
 	"micro-server/models"
 	"net/http"
 
@@ -12,7 +11,7 @@ import (
 )
 
 type UserInfoController struct {
-	BaseController.BaseController
+	Base
 }
 
 func (con UserInfoController) UserInfo(c *gin.Context) {

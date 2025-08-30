@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"encoding/json"
@@ -8,12 +8,10 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-
-	BaseController "micro-server/controllers/base-controller"
 )
 
 type LoginController struct {
-	BaseController.BaseController
+	Base
 }
 
 func (con LoginController) Login(c *gin.Context) {
