@@ -12,6 +12,13 @@ type Role struct {
 	CreateTime time.Time `gorm:"column:create_time;autoCreateTime" json:"create_time"`
 }
 
+// 返回给前端的角色列表
+type RoleList struct {
+	RoleId   uint   `json:"role_id"`
+	RoleName string `json:"role_name"`
+	RoleDesc string `json:"role_desc"`
+}
+
 func (Role) TableName() string {
 	// 指定表名
 	return "role"

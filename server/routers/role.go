@@ -2,13 +2,12 @@ package routers
 
 import (
 	"micro-server/controllers"
-	"micro-server/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RoleInit(r *gin.Engine) {
-	user := r.Group("/role", middlewares.InitAdminAuthMiddleware)
+	user := r.Group("/role")
 
 	// 用户相关路由
 	{
