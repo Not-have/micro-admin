@@ -14,5 +14,6 @@ func RoleInit(r *gin.Engine) {
 		role.POST("/create", controllers.RoleController{}.RoleCreate)
 		role.GET("/list", controllers.RoleController{}.RoleList)
 		role.DELETE("/delete", controllers.RoleController{}.RoleDelete)
+		role.POST("/update", controllers.RoleController{}.RoleUpdate)
 	}
 }

@@ -100,3 +100,40 @@ func (con RoleController) RoleDelete(c *gin.Context) {
 
 	con.Base.success(c, "删除成功")
 }
+
+func (con RoleController) RoleUpdate(c *gin.Context) {
+	id := c.PostForm("id")
+	role_name := strings.Trim(c.PostForm("role_name"), " ")
+	role_desc := strings.Trim(c.PostForm("role_desc"), " ")
+
+	if id == "" && (role_name == "" || role_desc == "") {
+		con.Base.fail(c, "参数错误")
+		return
+	}
+
+	// 转换
+	var roleId uint
+	_, err := fmt.Sscanf(id, "%d", &roleId)
+	if err != nil {
+		con.Base.fail(c, "无效的ID")
+		return
+	}
+	role := models.Role{RoleId: roleId}
+	models.DB.Find(&role)
+
+	if role.RoleId == 0 {
+		con.Base.fail(c, "角色不存在")
+		return
+	}
+
+	role.RoleName = role_name
+	role.RoleDesc = role_desc
+
+	err = models.DB.Save(&role).Error
+	if err != nil {
+		con.Base.fail(c, "更新失败")
+		return
+	}
+
+	con.Base.success(c, "更新成功")
+}
